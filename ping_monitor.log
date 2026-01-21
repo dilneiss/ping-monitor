@@ -1,0 +1,30 @@
+2026-01-21 15:21:53,446 WARNING Indisponível: 8.8.4.4 às 2026-01-21 15:21:53 (perdas consecutivas: 3)
+2026-01-21 15:21:53,446 WARNING Indisponível: mkm.net.br às 2026-01-21 15:21:53 (perdas consecutivas: 3)
+2026-01-21 15:21:53,446 WARNING Indisponível: google.com às 2026-01-21 15:21:53 (perdas consecutivas: 3)
+2026-01-21 15:21:53,446 WARNING Indisponível: 187.102.32.2 às 2026-01-21 15:21:53 (perdas consecutivas: 3)
+2026-01-21 15:22:02,450 WARNING Indisponível: 187.102.40.2 às 2026-01-21 15:22:02 (perdas consecutivas: 3)
+2026-01-21 15:22:05,451 WARNING Indisponível: 8.8.8.8 às 2026-01-21 15:22:05 (perdas consecutivas: 3)
+2026-01-21 15:23:05,449 INFO Voltou: 187.102.32.2 às 2026-01-21 15:23:05, tempo até voltar: 72.0s
+2026-01-21 15:23:37,539 INFO Voltou: 187.102.40.2 às 2026-01-21 15:23:37, tempo até voltar: 95.1s
+2026-01-21 15:23:48,439 INFO Voltou: 8.8.8.8 às 2026-01-21 15:23:48, tempo até voltar: 103.0s
+2026-01-21 15:23:48,441 INFO Voltou: 8.8.4.4 às 2026-01-21 15:23:48, tempo até voltar: 115.0s
+2026-01-21 15:23:48,443 INFO Voltou: mkm.net.br às 2026-01-21 15:23:48, tempo até voltar: 115.0s
+2026-01-21 15:23:48,445 INFO Voltou: google.com às 2026-01-21 15:23:48, tempo até voltar: 115.0s
+2026-01-21 15:25:30,961 WARNING Indisponível: google.com às 2026-01-21 15:25:30 (perdas consecutivas: 3)
+2026-01-21 15:25:56,445 WARNING Indisponível: 8.8.8.8 às 2026-01-21 15:25:56 (perdas consecutivas: 3)
+2026-01-21 15:25:56,445 WARNING Indisponível: 8.8.4.4 às 2026-01-21 15:25:56 (perdas consecutivas: 3)
+2026-01-21 15:25:56,445 WARNING Indisponível: mkm.net.br às 2026-01-21 15:25:56 (perdas consecutivas: 3)
+2026-01-21 15:25:56,445 WARNING Indisponível: 187.102.40.2 às 2026-01-21 15:25:56 (perdas consecutivas: 3)
+2026-01-21 15:25:59,449 WARNING Indisponível: 187.102.32.2 às 2026-01-21 15:25:59 (perdas consecutivas: 3)
+2026-01-21 15:27:22,460 INFO Voltou: 187.102.32.2 às 2026-01-21 15:27:22, tempo até voltar: 83.0s
+2026-01-21 15:27:25,768 INFO Voltou: 187.102.40.2 às 2026-01-21 15:27:25, tempo até voltar: 89.3s
+2026-01-21 15:27:32,543 INFO Voltou: 8.8.8.8 às 2026-01-21 15:27:32, tempo até voltar: 96.1s
+2026-01-21 15:27:32,545 INFO Voltou: google.com às 2026-01-21 15:27:32, tempo até voltar: 121.6s
+2026-01-21 15:27:45,332 INFO Encerrado
+2026-01-21 15:29:18,954 WARNING Indisponível: mkm.net.br às 2026-01-21 15:29:18 (perdas consecutivas: 3)
+2026-01-21 15:29:18,954 WARNING Indisponível: google.com às 2026-01-21 15:29:18 (perdas consecutivas: 3)
+2026-01-21 15:29:55,655 INFO Voltou: mkm.net.br às 2026-01-21 15:29:55, tempo até voltar: 36.7s
+2026-01-21 15:30:01,960 INFO Voltou: google.com às 2026-01-21 15:30:01, tempo até voltar: 43.0s
+2026-01-21 15:40:00,557 INFO Encerrado
+2026-01-21 15:45:45,579 INFO Encerrado
+2026-01-21 15:48:04,863 INFO Encerrado

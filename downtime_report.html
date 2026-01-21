@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Relatório de Quedas de Conexão</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 {
+      text-align: center;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      margin-bottom: 10px;
+    }
+    h2 {
+      color: white;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+      margin-top: 40px;
+      margin-bottom: 20px;
+    }
+    .summary {
+      text-align: center;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 30px;
+      font-size: 1.1em;
+    }
+    .charts-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .chart-box {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    .chart-title {
+      text-align: center;
+      font-size: 1.1em;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 15px;
+    }
+    .chart-subtitle {
+      text-align: center;
+      font-size: 0.9em;
+      color: #666;
+      margin: -10px 0 15px 0;
+    }
+    .chart-box-full {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      margin-bottom: 30px;
+    }
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      overflow: hidden;
+      transition: transform 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .card-header {
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .severity-low .card-header {
+      background: linear-gradient(90deg, #28a745, #5cb85c);
+    }
+    .severity-medium .card-header {
+      background: linear-gradient(90deg, #ffc107, #ffca2c);
+    }
+    .severity-high .card-header {
+      background: linear-gradient(90deg, #dc3545, #e4606d);
+    }
+    .target {
+      font-weight: bold;
+      color: white;
+      font-size: 1.1em;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    }
+    .severity-badge {
+      background: rgba(255,255,255,0.3);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.8em;
+      font-weight: bold;
+    }
+    .card-body {
+      padding: 20px;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .info-row:last-of-type {
+      border-bottom: none;
+    }
+    .label {
+      color: #666;
+      font-weight: 500;
+    }
+    .value {
+      color: #333;
+      font-weight: 600;
+    }
+    .duration-display {
+      margin-top: 15px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .duration-label {
+      display: block;
+      color: #666;
+      font-size: 0.9em;
+      margin-bottom: 5px;
+    }
+    .duration-value {
+      font-size: 1.8em;
+      font-weight: bold;
+      color: #dc3545;
+    }
+    .no-events {
+      text-align: center;
+      color: white;
+      padding: 50px;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📡 Relatório de Quedas de Conexão</h1>
+    <p class="summary">Total de quedas registradas: <strong>2</strong></p>
+    
+    <div class="charts-container">
+      <div class="chart-box">
+        <div class="chart-title">📊 Quantidade de Quedas por Alvo</div>
+        <canvas id="countChart"></canvas>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">⏱️ Tempo Total Offline por Alvo (segundos)</div>
+        <canvas id="durationChart"></canvas>
+      </div>
+    </div>
+    
+    <div class="chart-box-full">
+      <div class="chart-title">📈 Linha do Tempo - Quedas por Hora</div>
+      <p class="chart-subtitle">Pontos maiores = mais alvos caíram no mesmo horário (🔴 vermelho = 3+ alvos)</p>
+      <canvas id="timelineChart" height="100"></canvas>
+    </div>
+    
+    <h2>📋 Histórico Detalhado</h2>
+    <div class="cards-grid">
+      
+            <div class="card severity-medium">
+                <div class="card-header">
+                    <span class="target">mkm.net.br</span>
+                    <span class="severity-badge">Média</span>
+                </div>
+                <div class="card-body">
+                    <div class="info-row">
+                        <span class="label">📅 Data:</span>
+                        <span class="value">21/01/2026</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">🔴 Caiu às:</span>
+                        <span class="value">15:29:18</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">🟢 Voltou às:</span>
+                        <span class="value">15:29:55</span>
+                    </div>
+                    <div class="duration-display">
+                        <span class="duration-label">Tempo Offline:</span>
+                        <span class="duration-value">36.7s</span>
+                    </div>
+                </div>
+            </div>
+            
+
+            <div class="card severity-medium">
+                <div class="card-header">
+                    <span class="target">google.com</span>
+                    <span class="severity-badge">Média</span>
+                </div>
+                <div class="card-body">
+                    <div class="info-row">
+                        <span class="label">📅 Data:</span>
+                        <span class="value">21/01/2026</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">🔴 Caiu às:</span>
+                        <span class="value">15:29:18</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">🟢 Voltou às:</span>
+                        <span class="value">15:30:01</span>
+                    </div>
+                    <div class="duration-display">
+                        <span class="duration-label">Tempo Offline:</span>
+                        <span class="duration-value">43.0s</span>
+                    </div>
+                </div>
+            </div>
+            
+    </div>
+  </div>
+  
+  <script>
+    const labels = ['mkm.net.br', 'google.com'];
+    const countData = [1, 1];
+    const durationData = [36.7, 43.0];
+    
+    // Count Chart
+    new Chart(document.getElementById('countChart'), {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Quedas',
+          data: countData,
+          backgroundColor: 'rgba(220, 53, 69, 0.7)',
+          borderColor: 'rgba(220, 53, 69, 1)',
+          borderWidth: 2,
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { stepSize: 1 }
+          }
+        }
+      }
+    });
+    
+    // Duration Chart
+    new Chart(document.getElementById('durationChart'), {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Segundos Offline',
+          data: durationData,
+          backgroundColor: 'rgba(102, 126, 234, 0.7)',
+          borderColor: 'rgba(102, 126, 234, 1)',
+          borderWidth: 2,
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+    
+    // Timeline Chart with outage markers
+    const timelineLabels = ['21/01 15:00'];
+    const timelineCounts = [2];
+    const timelineTargets = [['mkm.net.br', 'google.com']];
+    
+    // Dynamic point sizes and colors based on concurrent outages
+    const pointRadii = timelineCounts.map(count => count >= 3 ? 15 : (count >= 2 ? 10 : 6));
+    const pointColors = timelineCounts.map(count => 
+      count >= 3 ? 'rgba(220, 53, 69, 1)' : (count >= 2 ? 'rgba(255, 193, 7, 1)' : 'rgba(102, 126, 234, 1)')
+    );
+    const pointBorderColors = timelineCounts.map(count => 
+      count >= 3 ? 'rgba(150, 30, 45, 1)' : (count >= 2 ? 'rgba(200, 150, 0, 1)' : 'rgba(60, 80, 180, 1)')
+    );
+    
+    new Chart(document.getElementById('timelineChart'), {
+      type: 'line',
+      data: {
+        labels: timelineLabels,
+        datasets: [{
+          label: 'Quedas por Hora',
+          data: timelineCounts,
+          borderColor: 'rgba(102, 126, 234, 0.5)',
+          backgroundColor: 'rgba(102, 126, 234, 0.1)',
+          borderWidth: 2,
+          fill: true,
+          tension: 0.3,
+          pointRadius: pointRadii,
+          pointBackgroundColor: pointColors,
+          pointBorderColor: pointBorderColors,
+          pointBorderWidth: 2,
+          pointHoverRadius: 18
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const idx = context.dataIndex;
+                const count = timelineCounts[idx];
+                const targets = timelineTargets[idx];
+                return [`Quedas: ${count}`, `Alvos: ${targets.join(', ')}`];
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { stepSize: 1 },
+            title: {
+              display: true,
+              text: 'Quantidade de Quedas'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Horário'
+            }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
